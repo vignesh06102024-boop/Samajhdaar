@@ -61,7 +61,7 @@ export default function ShareActSection() {
     // Simulate API call
     await new Promise(resolve => setTimeout(resolve, 1500));
     
-    /* Uncomment for real API call
+    // Uncomment for real API call
     await fetch("/api", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -73,7 +73,7 @@ export default function ShareActSection() {
         imageType: type
       })
     });
-    */
+    
 
     setIsSubmitting(false);
     setSubmitted(true);
