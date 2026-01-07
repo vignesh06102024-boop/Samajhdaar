@@ -20,7 +20,7 @@ export default function ShareActSection() {
   const [formData, setFormData] = useState({
     name: "",
     city: "",
-    act: "",
+    act: ""
   });
 
   /* ---------- Handle Image Upload ---------- */
@@ -28,6 +28,7 @@ export default function ShareActSection() {
     const file = e.target.files?.[0];
     if (file) {
       setImageFile(file);
+      // Create preview
       const preview = await toBase64(file);
       setImagePreview(preview);
     }
@@ -57,50 +58,47 @@ export default function ShareActSection() {
       type = imageFile.type;
     }
 
-    const payload = {
-      name: formData.name,
-      city: formData.city,
-      description: formData.act,
-      imageBase64: imageFile ? base64 : undefined,
-      imageType: imageFile ? type : undefined,
-    };
-
-    /* ---------- Determine URL ---------- */
-    const SCRIPT_URL = import.meta.env.DEV
-      ? "/api" // Use Vite proxy during development
-      : "https://script.google.com/macros/s/AKfycbxGymwqeoK_BUOJAIOy62trMqkXfChFC0ytuGlCnmv8onJMZh29CBQwNT-0RecQSouLgw/exec"; // Production
-
+    // Google Apps Script URL - works in both development and production
+    const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxGymwqeoK_BUOJAIOy62trMqkXfChFC0ytuGlCnmv8onJMZh29CBQwNT-0RecQSouLgw/exec";
+    
     try {
-      const response = await fetch(SCRIPT_URL, {
+      const response = await fetch(GOOGLE_SCRIPT_URL, {
         method: "POST",
-        body: JSON.stringify(payload), // Do NOT set headers
+        mode: "no-cors", // Required for Google Apps Script
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: formData.name,
+          city: formData.city,
+          description: formData.act,
+          imageBase64: base64,
+          imageType: type
+        })
       });
-
-      const data = await response.json();
-      if (!data.success) throw new Error("Submission failed");
-      setSubmitted(true);
-    } catch (err) {
-      console.error(err);
-      alert("Submission failed. Please try again.");
-    } finally {
+      
+      // Note: no-cors mode doesn't allow reading response
+      console.log("Submission sent to Google Sheets");
+      
       setIsSubmitting(false);
-      // Reset form after 5 seconds
+      setSubmitted(true);
+
       setTimeout(() => {
         setSubmitted(false);
         setFormData({ name: "", city: "", act: "" });
         setImageFile(null);
         setImagePreview("");
       }, 5000);
+    } catch (error) {
+      console.error("Submission error:", error);
+      setIsSubmitting(false);
+      alert("There was an error submitting your form. Please try again.");
     }
   };
 
   return (
-    <section
-      id="share"
-      className="py-20 bg-gradient-to-br from-orange-50 via-white to-green-50"
-    >
+    <section id="share" className="py-20 bg-gradient-to-br from-orange-50 via-white to-green-50">
       <div className="container mx-auto px-4">
         <div className="max-w-3xl mx-auto">
+
           {/* ---------- Header ---------- */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -113,8 +111,7 @@ export default function ShareActSection() {
               Share Your Samajhdaar Act
             </h2>
             <p className="text-lg text-gray-600">
-              Did you do something responsible today?
-              <br />
+              Did you do something responsible today?<br />
               Share it with us and inspire others.
             </p>
           </motion.div>
@@ -129,6 +126,7 @@ export default function ShareActSection() {
           >
             {!submitted ? (
               <div className="space-y-6">
+
                 {/* Name */}
                 <div>
                   <label className="block text-sm font-semibold text-gray-900 mb-2">
@@ -186,9 +184,7 @@ export default function ShareActSection() {
                   {!imagePreview ? (
                     <label className="block border-2 border-dashed border-gray-300 rounded-lg p-8 text-center cursor-pointer bg-gray-50 hover:border-green-600 hover:bg-green-50 transition-all">
                       <Upload className="w-12 h-12 mx-auto text-gray-400 mb-2" />
-                      <p className="text-sm text-gray-600 font-medium">
-                        Click to upload an image
-                      </p>
+                      <p className="text-sm text-gray-600 font-medium">Click to upload an image</p>
                       <p className="text-xs text-gray-500 mt-1">PNG, JPG up to 5MB</p>
 
                       <input
