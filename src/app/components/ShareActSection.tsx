@@ -57,23 +57,34 @@ export default function ShareActSection() {
       base64 = result;
       type = imageFile.type;
     }
+    const payload = {
+    name: formData.name,
+    city: formData.city,
+    description: formData.act,
+    imageBase64: imageFile ? base64 : undefined,
+    imageType: imageFile ? type : undefined
+  };
 
     // Simulate API call
     await new Promise(resolve => setTimeout(resolve, 1500));
     
     // Uncomment for real API call
-    await fetch("/api", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        name: formData.name,
-        city: formData.city,
-        description: formData.act,
-        imageBase64: base64,
-        imageType: type
-      })
-    });
+    // await fetch("/api", {
+    //   method: "POST",
+    //   headers: { "Content-Type": "application/json" },
+    //   body: JSON.stringify({
+    //     name: formData.name,
+    //     city: formData.city,
+    //     description: formData.act,
+    //     imageBase64: base64,
+    //     imageType: type
+    //   })
+    // });
     
+  await fetch("/api", {
+  method: "POST",
+  body: JSON.stringify(payload) // do NOT set headers
+});
 
     setIsSubmitting(false);
     setSubmitted(true);
