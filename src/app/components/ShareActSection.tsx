@@ -81,7 +81,9 @@ export default function ShareActSection() {
     //   })
     // });
     
-  await fetch("/api", {
+  const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxGymwqeoK_BUOJAIOy62trMqkXfChFC0ytuGlCnmv8onJMZh29CBQwNT-0RecQSouLgw/exec'; // Use your deployed Apps Script URL
+
+  await fetch(SCRIPT_URL, {
   method: "POST",
   body: JSON.stringify(payload) // do NOT set headers
 });
