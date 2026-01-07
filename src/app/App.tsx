@@ -2,13 +2,14 @@ import { useState } from "react";
 import { HeroSection } from "./components/HeroSection";
 import { AboutSection } from "./components/AboutSection";
 import CivicChallenges from "./components/CivicChallenges";
-import { ShareActSection } from "./components/ShareActSection";
+import  ShareActSection  from "./components/ShareActSection";
 import { StoriesSection } from "./components/StoriesSection";
 import { ContactSection } from "./components/ContactSection";
 import { Footer } from "./components/Footer";
 import { Header } from "./components/Header";
 import  CivicEducation  from "./components/Civiceducation";
 import { PledgeDialog } from "./components/PledgeDialog";
+import ReportCivicIssues from "./components/ReportCivicIssues";
 
 
 export default function App() {
@@ -58,6 +59,9 @@ export default function App() {
 
       <section id="share">
         <ShareActSection />
+      </section>
+      <section id="report-issues">
+        <ReportCivicIssues />
       </section>
 
       <section id="stories">

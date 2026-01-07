@@ -45,6 +45,12 @@ export function Header() {
           >
             Challenges
           </button>
+            <button 
+            onClick={() => scrollTo("report-issues")} 
+            className="cursor-pointer hover:text-[#138808] transition-colors duration-300"
+          >
+            Report Issues
+          </button>
           <button 
             onClick={() => scrollTo("contact")} 
             className="cursor-pointer hover:text-[#138808] transition-colors duration-300"
