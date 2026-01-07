@@ -7,7 +7,7 @@ import { StoriesSection } from "./components/StoriesSection";
 import { ContactSection } from "./components/ContactSection";
 import { Footer } from "./components/Footer";
 import { Header } from "./components/Header";
-import  CivicEducation  from "./components/Civiceducation";
+import  CivicEducation  from "./components/CivicEducation";
 import { PledgeDialog } from "./components/PledgeDialog";
 import ReportCivicIssues from "./components/ReportCivicIssues";
 
